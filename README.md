@@ -10,6 +10,8 @@ Create a virtual environment
 python3 -m venv venv
 ```
 
+Activation of the virtual environment.
+
 for MacBook and Linux
 
 ```shell
