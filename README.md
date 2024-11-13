@@ -4,7 +4,7 @@ Django Framework for learning purposes.
 
 ## Installation
 
-Create a virtual environment
+Create a virtual environment.
 
 ```shell
 python3 -m venv venv
@@ -32,13 +32,19 @@ pip install -r req.txt
 
 ## Django setUp
 
-Django setUp
+Django setUp.
 
 ```shell
 make
 ```
-Create superuser
+Create superuser.
 
 ```shell
 python manage.py createsuperuser
+```
+
+Run the project.
+
+```shell
+python manage.py runserver
 ```
