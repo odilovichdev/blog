@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-2 posts-container">
+            <h2>Eng Yangi Postlar</h2>
+
+            {% for post in latest_post %}
+                <div class="post-card">
+                    <h3 class="fs-6">{{ post.title }}</h3>
+                    <p>{{ post.content|truncatewords:20 }}</p>
+                    <a href="{% url 'posts:detail' post.id %}">Batafsil...</a>
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="col-2 posts-container">
+            <h2>Eng Ko‘p Ko‘rilgan Postlar</h2>
+
+            {% for post in most_view_post %}
+                <div class="post-card">
+                    <h3 class="fs-6">{{ post.title }}</h3>
+                    <p>Ko‘rishlar soni: {{ post.view_count }}</p>
+                    <a href="{% url 'posts:detail' post.pk %}">Batafsil...</a>
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="col-2 posts-container">
+            <h2>Haftaning Eng Ommabop Postlari</h2>
+            {% for post in popular_this_week %}
+                <div class="post-card">
+                    <h3 class="fs-6">{{ post.title }}</h3>
+                    <p>Ko‘rishlar soni: {{ post.view_count }}</p>
+                    <a href="{% url 'posts:detail' post.id %}">Batafsil...</a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-2 posts-container">
+            <h2>Oyning Eng Ommabop Postlari</h2>
+            {% for post in popular_this_month %}
+                <div class="post-card">
+                    <h3 class="fs-6">{{ post.title }}</h3>
+                    <p>Ko‘rishlar soni: {{ post.view_count }}</p>
+                    <a href="{% url 'posts:detail' post.pk %}">Batafsil...</a>
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="col-2 posts-container">
+            <h2>Tavsiya Qilingan Postlar</h2>
+            {% for post in recommended_post %}
+                <div class="post-card">
+                    <h3 class="fs-6">{{ post.title }}</h3>
+                    <p>Ko'rishlar soni: {{ post.view_count }}</p>
+                    <a href="{% url 'posts:detail' post.pk %}">Batafsil...</a>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}

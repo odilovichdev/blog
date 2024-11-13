@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Post list{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+        <h3><a href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a></h3>
+        <img src="{{ post.image.url }}" alt="There is a picture">
+        <p>{{ post.desc }}</p>
+    {% endfor %}
+{% endblock %}

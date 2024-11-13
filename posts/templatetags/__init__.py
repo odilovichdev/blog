@@ -1,0 +1,1 @@
+from posts.templatetags import *
