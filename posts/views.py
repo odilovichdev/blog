@@ -2,12 +2,31 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 
 from posts.forms import CreatePostForm, CommentCreateForm
 from posts.models import Post, PostView, Comment
 
 
-class PostCommentView(View, LoginRequiredMixin):
+class AdminPostApprovalView(View):
+
+    def get(self, request):
+        posts = Post.objects.filter(status=Post.Status.DRAFT)
+        context = {
+            "posts": posts
+        }
+        return render(request, "admin_approval.html", context)
+
+    def post(self, request):
+        post_id = request.POST.get("post_id")
+        post = get_object_or_404(Post, id=post_id)
+        post.status = Post.Status.PUBLISHED
+        post.save()
+        return redirect("admin_approval")
+
+
+class PostCommentView(LoginRequiredMixin, View):
     def post(self, request, pk):
         post = get_object_or_404(Post, id=pk)
         comment_form = CommentCreateForm(data=request.POST)
@@ -27,33 +46,38 @@ class PostCommentView(View, LoginRequiredMixin):
 
 class PostListView(View):
     def get(self, request):
-        posts = Post.objects.filter(category__name=request.GET.get('name', None))
+        category_name = request.GET.get('name', None)
+        posts = Post.objects.filter(
+            status=Post.Status.PUBLISHED,
+            category__name=category_name
+        ) if category_name else Post.objects.filter(status=Post.Status.PUBLISHED)
         context = {
             'posts': posts
         }
         return render(request, 'list.html', context)
 
 
-class CreateView(View, LoginRequiredMixin):
+
+class CreateView(LoginRequiredMixin, View):
     def get(self, request):
-        post = CreatePostForm()
+        form = CreatePostForm()
         context = {
-            'form': post
+            'form': form
         }
         return render(request, 'create.html', context)
 
     def post(self, request):
-        post = CreatePostForm(
+        form = CreatePostForm(
             data=request.POST,
             files=request.FILES
-            )
-        if post.is_valid():
-            post_instance = post.save(commit=False)
+        )
+        if form.is_valid():
+            post_instance = form.save(commit=False)
             post_instance.user = request.user
             post_instance.save()
             return redirect('common:home')
         context = {
-            "form": post
+            "form": form
         }
         return render(request, 'create.html', context)
 
@@ -75,9 +99,12 @@ class DetailView(View):
         return render(request, 'detail.html', context)
 
 
-class UpdateView(View, LoginRequiredMixin):
+class UpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         post = get_object_or_404(Post, id=pk)
+        # Faqat post egasiga ruxsat berish
+        if post.user != request.user:
+            return redirect('common:home')
         form = CreatePostForm(instance=post)
         context = {
             "form": form
@@ -86,6 +113,8 @@ class UpdateView(View, LoginRequiredMixin):
 
     def post(self, request, pk):
         post = get_object_or_404(Post, id=pk)
+        if post.user != request.user:
+            return redirect('common:home')
         form = CreatePostForm(
             data=request.POST,
             files=request.FILES,
@@ -101,7 +130,9 @@ class UpdateView(View, LoginRequiredMixin):
 
 
 class DeleteView(View, LoginRequiredMixin):
-    def get(self, request, pk):
+
+    def post(self, request, pk):
         post = get_object_or_404(Post, id=pk)
-        post.delete()
+        if post.user == request.user:
+            post.delete()
         return redirect('common:home')

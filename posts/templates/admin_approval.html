@@ -1,0 +1,32 @@
+<!-- templates/posts/admin_approval.html -->
+{% extends 'base.html' %}
+
+{% block title %}Admin Approval{% endblock %}
+
+{% block content %}
+<h1>Pending Posts for Approval</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.user.first_name }} {{ post.user.last_name }}</td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Post list{% endblock %}
+{% block title %}Post List{% endblock %}
 
 {% block content %}
-    {% for post in posts %}
-        <h3><a href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a></h3>
-        <img src="{{ post.image.url }}" alt="There is a picture">
-        <p>{{ post.desc }}</p>
-    {% endfor %}
+<div class="container py-4">
+    <h2 class="text-center mb-4 text-primary fw-bold">Post List</h2>
+    <div class="row gy-4">
+        {% for post in posts %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="Post image">
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">
+                            <a href="{% url 'posts:detail' post.pk %}" class="text-decoration-none text-dark">
+                                {{ post.title }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted">
+                            {{ post.desc|truncatewords:20 }}
+                        </p>
+                        <a href="{% url 'posts:detail' post.pk %}" class="btn btn-primary btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

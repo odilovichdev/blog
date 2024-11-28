@@ -4,64 +4,102 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    
-    <div class="row">
-        <div class="col-2 posts-container">
-            <h2>Eng Yangi Postlar</h2>
-
-            {% for post in latest_post %}
-                <div class="post-card">
-                    <h3 class="fs-6">{{ post.title }}</h3>
-                    <p>{{ post.content|truncatewords:20 }}</p>
-                    <a href="{% url 'posts:detail' post.id %}">Batafsil...</a>
+<div class="container py-5">
+    <div class="row gy-4">
+        <!-- Eng Yangi Postlar -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-primary fw-bold">
+                        <i class="bi bi-stars me-2"></i>Eng Yangi Postlar
+                    </h5>
+                    <hr>
+                    {% for post in latest_post %}
+                        <div class="post-item mb-3">
+                            <h6 class="fw-semibold text-dark">{{ post.title }}</h6>
+                            <p class="text-muted small">{{ post.content|truncatewords:20 }}</p>
+                            <a href="{% url 'posts:detail' post.id %}" class="btn btn-sm btn-outline-primary">Batafsil...</a>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-
+            </div>
         </div>
-        <div class="col-2 posts-container">
-            <h2>Eng Ko‘p Ko‘rilgan Postlar</h2>
 
-            {% for post in most_view_post %}
-                <div class="post-card">
-                    <h3 class="fs-6">{{ post.title }}</h3>
-                    <p>Ko‘rishlar soni: {{ post.view_count }}</p>
-                    <a href="{% url 'posts:detail' post.pk %}">Batafsil...</a>
+        <!-- Eng Ko‘p Ko‘rilgan Postlar -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-danger fw-bold">
+                        <i class="bi bi-eye me-2"></i>Eng Ko‘p Ko‘rilgan Postlar
+                    </h5>
+                    <hr>
+                    {% for post in most_view_post %}
+                        <div class="post-item mb-3">
+                            <h6 class="fw-semibold text-dark">{{ post.title }}</h6>
+                            <p class="text-muted small">Ko‘rishlar soni: {{ post.view_count }}</p>
+                            <a href="{% url 'posts:detail' post.pk %}" class="btn btn-sm btn-outline-danger">Batafsil...</a>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-
+            </div>
         </div>
-        <div class="col-2 posts-container">
-            <h2>Haftaning Eng Ommabop Postlari</h2>
-            {% for post in popular_this_week %}
-                <div class="post-card">
-                    <h3 class="fs-6">{{ post.title }}</h3>
-                    <p>Ko‘rishlar soni: {{ post.view_count }}</p>
-                    <a href="{% url 'posts:detail' post.id %}">Batafsil...</a>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="col-2 posts-container">
-            <h2>Oyning Eng Ommabop Postlari</h2>
-            {% for post in popular_this_month %}
-                <div class="post-card">
-                    <h3 class="fs-6">{{ post.title }}</h3>
-                    <p>Ko‘rishlar soni: {{ post.view_count }}</p>
-                    <a href="{% url 'posts:detail' post.pk %}">Batafsil...</a>
-                </div>
-            {% endfor %}
 
-        </div>
-        <div class="col-2 posts-container">
-            <h2>Tavsiya Qilingan Postlar</h2>
-            {% for post in recommended_post %}
-                <div class="post-card">
-                    <h3 class="fs-6">{{ post.title }}</h3>
-                    <p>Ko'rishlar soni: {{ post.view_count }}</p>
-                    <a href="{% url 'posts:detail' post.pk %}">Batafsil...</a>
+        <!-- Haftaning Eng Ommabop Postlari -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-success fw-bold">
+                        <i class="bi bi-calendar-week me-2"></i>Haftaning Eng Ommabop Postlari
+                    </h5>
+                    <hr>
+                    {% for post in popular_this_week %}
+                        <div class="post-item mb-3">
+                            <h6 class="fw-semibold text-dark">{{ post.title }}</h6>
+                            <p class="text-muted small">Ko‘rishlar soni: {{ post.view_count }}</p>
+                            <a href="{% url 'posts:detail' post.id %}" class="btn btn-sm btn-outline-success">Batafsil...</a>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
+        </div>
 
+        <!-- Oyning Eng Ommabop Postlari -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-warning fw-bold">
+                        <i class="bi bi-calendar-month me-2"></i>Oyning Eng Ommabop Postlari
+                    </h5>
+                    <hr>
+                    {% for post in popular_this_month %}
+                        <div class="post-item mb-3">
+                            <h6 class="fw-semibold text-dark">{{ post.title }}</h6>
+                            <p class="text-muted small">Ko‘rishlar soni: {{ post.view_count }}</p>
+                            <a href="{% url 'posts:detail' post.pk %}" class="btn btn-sm btn-outline-warning">Batafsil...</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Tavsiya Qilingan Postlar -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-info fw-bold">
+                        <i class="bi bi-heart me-2"></i>Tavsiya Qilingan Postlar
+                    </h5>
+                    <hr>
+                    {% for post in recommended_post %}
+                        <div class="post-item mb-3">
+                            <h6 class="fw-semibold text-dark">{{ post.title }}</h6>
+                            <p class="text-muted small">Ko‘rishlar soni: {{ post.view_count }}</p>
+                            <a href="{% url 'posts:detail' post.pk %}" class="btn btn-sm btn-outline-info">Batafsil...</a>
+                        </div>
+                    {% endfor %}    
+                </div>
+            </div>
         </div>
     </div>
-
+</div>
 {% endblock %}
